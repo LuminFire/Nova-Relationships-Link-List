@@ -1,5 +1,6 @@
-# Publishes a composer package
+# Publishes a composer package and deploys documentation
 # See https://git.luminfire.net/ops/tooling/ci/gitlab-ci-general/-/tree/master/composer-package
+# See also https://git.luminfire.net/ops/tooling/ci/gitlab-ci-general/-/tree/master/wp-plugin
 #
 # See also:
 # - https://docs.gitlab.com/ee/user/packages/
@@ -8,6 +9,7 @@
 
 stages:
   - build
+  - deploy
 
 # Cache files for use between jobs and pipelines.
 cache:
@@ -39,3 +41,16 @@ Publish Composer Package:
         echo "Could not create package - Code $code - $body";
         exit 1;
       fi
+
+Deploy Documentation:
+  stage: deploy
+  only:
+    - master
+  resource_group: docs
+  environment:
+    name: docs
+    url: $DOCS_URL
+  cache:
+    policy: pull
+  script:
+    - curl $DEPLOY_DOCS
