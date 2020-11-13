@@ -1,0 +1,29 @@
+{
+    "name": "brilliant-packages/nova-relationships-link-list",
+    "description": "A Laravel Nova field to display relationships as a comma-separated list of links, rather than a full table.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BrilliantPackages\\NovaRelationshipsLinkList\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BrilliantPackages\\NovaRelationshipsLinkList\\FieldServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
