@@ -1,0 +1,41 @@
+# Publishes a composer package
+# See https://git.luminfire.net/ops/tooling/ci/gitlab-ci-general/-/tree/master/composer-package
+#
+# See also:
+# - https://docs.gitlab.com/ee/user/packages/
+# - https://docs.gitlab.com/13.2/ee/user/packages/composer_repository/index.html
+# - https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Composer.gitlab-ci.yml
+
+stages:
+  - build
+
+# Cache files for use between jobs and pipelines.
+cache:
+  key: $CI_BUILD_REF_NAME
+  paths:
+    - .npm
+    - node_modules
+    - public
+    - vendor
+
+
+Publish Composer Package:
+  image: curlimages/curl:latest
+  stage: build
+  only:
+    - tags
+  variables:
+    URL: "$CI_SERVER_PROTOCOL://$CI_SERVER_HOST:$CI_SERVER_PORT/api/v4/projects/$CI_PROJECT_ID/packages/composer?job_token=$CI_JOB_TOKEN"
+  script:
+    - version=$([[ -z "$CI_COMMIT_TAG" ]] && echo "branch=$CI_COMMIT_REF_NAME" || echo "tag=$CI_COMMIT_TAG")
+    - insecure=$([ "$CI_SERVER_PROTOCOL" = "http" ] && echo "--insecure" || echo "")
+    - response=$(curl -s -w "\n%{http_code}" $insecure --data $version $URL)
+    - code=$(echo "$response" | tail -n 1)
+    - body=$(echo "$response" | head -n 1)
+    # Output state information
+    - if [ $code -eq 201 ]; then
+        echo "Package created - Code $code - $body";
+      else
+        echo "Could not create package - Code $code - $body";
+        exit 1;
+      fi
