@@ -23,3 +23,13 @@ use BrilliantPackages\NovaRelationshipsLinkList\RelationshipsLinkList;
         ];
     }
 ```
+
+# Screenshots
+
+## Before
+
+![before](images/before.png)
+
+## After
+
+![after](images/after.png)
