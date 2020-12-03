@@ -40,6 +40,10 @@ class RelationshipsLinkList extends Field
     {
         $this->withMeta(['asHtml' => true]);
 
+        if ($resource->{$attribute}->isEmpty()) {
+            return '—';
+        }
+
         return $resource
             ->{$attribute}
             ->map(function ($model) use ($resource, $attribute) {
