@@ -44,10 +44,13 @@ class RelationshipsLinkList extends Field
             return '—';
         }
 
+        $path = nova::path();
+        $path .= (substr($path, -1) == '/' ? '' : '/');
+
         return $resource
             ->{$attribute}
-            ->map(function ($model) use ($resource, $attribute) {
-                return '<a class="no-underline dim text-primary font-bold" href="'.url(Nova::path().'/resources/'.$attribute.'/'.$model->id).'">'.$model->name.'</a>';
+            ->map(function ($model) use ($resource, $attribute, $path) {
+                return '<a class="no-underline dim text-primary font-bold" href="'.url($path.'resources/'.$attribute.'/'.$model->id).'">'.$model->name.'</a>';
             })
             ->implode(', ');
     }
