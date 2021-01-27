@@ -47,7 +47,7 @@ class RelationshipsLinkList extends Field
         return $resource
             ->{$attribute}
             ->map(function ($model) use ($resource, $attribute) {
-                return '<a class="no-underline dim text-primary font-bold" href="'.url(Nova::path().'/resources/'.$attribute.'/'.$model->id).'">'.$model->name.'</a>';
+                return '<a class="no-underline dim text-primary font-bold" href="'.url(Nova::path()).'/resources/'.$attribute.'/'.$model->id.'">'.$model->name.'</a>';
             })
             ->implode(', ');
     }
